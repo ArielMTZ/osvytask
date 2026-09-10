@@ -1,118 +1,71 @@
-// ---------- Estado ----------
-let tareas = JSON.parse(localStorage.getItem('tareas')) || [];
-let filtroActual = 'todas';
+// ---------- Fecha del torneo ----------
+const FECHA_TORNEO = new Date('2026-11-14T08:00:00');
 
-// ---------- Elementos ----------
-const form = document.getElementById('form-tarea');
-const input = document.getElementById('input-tarea');
-const selectPrioridad = document.getElementById('select-prioridad');
-const lista = document.getElementById('lista-tareas');
-const contador = document.getElementById('contador');
-const btnLimpiar = document.getElementById('btn-limpiar');
-const botonesFiltro = document.querySelectorAll('.filtro-btn');
-const fechaEl = document.getElementById('fecha');
+const elDias = document.getElementById('dias');
+const elHoras = document.getElementById('horas');
+const elMinutos = document.getElementById('minutos');
+const elSegundos = document.getElementById('segundos');
 
-// ---------- Fecha actual ----------
-const hoy = new Date();
-fechaEl.textContent = hoy.toLocaleDateString('es-ES', {
-  weekday: 'long', day: 'numeric', month: 'long'
+function actualizarCuenta() {
+  const ahora = new Date();
+  let diferencia = FECHA_TORNEO - ahora;
+
+  if (diferencia <= 0) {
+    elDias.textContent = '00';
+    elHoras.textContent = '00';
+    elMinutos.textContent = '00';
+    elSegundos.textContent = '¡Hoy!';
+    return;
+  }
+
+  const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+  const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+  const segundos = Math.floor((diferencia / 1000) % 60);
+
+  elDias.textContent = String(dias).padStart(2, '0');
+  elHoras.textContent = String(horas).padStart(2, '0');
+  elMinutos.textContent = String(minutos).padStart(2, '0');
+  elSegundos.textContent = String(segundos).padStart(2, '0');
+}
+
+actualizarCuenta();
+setInterval(actualizarCuenta, 1000);
+
+// ---------- Menú móvil ----------
+const btnMenu = document.getElementById('btn-menu');
+const navEnlaces = document.getElementById('nav-enlaces');
+
+btnMenu.addEventListener('click', () => {
+  navEnlaces.classList.toggle('abierto');
 });
 
-// ---------- Guardar en localStorage ----------
-function guardar() {
-  localStorage.setItem('tareas', JSON.stringify(tareas));
-}
-
-// ---------- Renderizar lista ----------
-function render() {
-  lista.innerHTML = '';
-
-  let tareasFiltradas = tareas;
-  if (filtroActual === 'pendientes') {
-    tareasFiltradas = tareas.filter(t => !t.completada);
-  } else if (filtroActual === 'completadas') {
-    tareasFiltradas = tareas.filter(t => t.completada);
-  }
-
-  if (tareasFiltradas.length === 0) {
-    lista.innerHTML = '<li class="vacio">No hay tareas aquí 🎉</li>';
-  }
-
-  tareasFiltradas.forEach(tarea => {
-    const li = document.createElement('li');
-    li.className = `tarea prioridad-${tarea.prioridad} ${tarea.completada ? 'completada' : ''}`;
-    li.innerHTML = `
-      <input type="checkbox" ${tarea.completada ? 'checked' : ''} data-id="${tarea.id}">
-      <span class="texto-tarea">${escaparHTML(tarea.texto)}</span>
-      <button class="btn-borrar" data-id="${tarea.id}">✕</button>
-    `;
-    lista.appendChild(li);
+navEnlaces.querySelectorAll('a').forEach(enlace => {
+  enlace.addEventListener('click', () => {
+    navEnlaces.classList.remove('abierto');
   });
+});
 
-  const pendientes = tareas.filter(t => !t.completada).length;
-  contador.textContent = `${pendientes} tarea${pendientes === 1 ? '' : 's'} pendiente${pendientes === 1 ? '' : 's'}`;
-}
+// ---------- Formulario de inscripción ----------
+const form = document.getElementById('form-registro');
+const mensajeForm = document.getElementById('mensaje-form');
 
-// ---------- Evitar inyección HTML ----------
-function escaparHTML(texto) {
-  const div = document.createElement('div');
-  div.textContent = texto;
-  return div.innerHTML;
-}
-
-// ---------- Agregar tarea ----------
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  const texto = input.value.trim();
-  if (!texto) return;
 
-  tareas.unshift({
-    id: Date.now(),
-    texto,
-    prioridad: selectPrioridad.value,
-    completada: false
-  });
+  const nombreEquipo = document.getElementById('nombre-equipo').value.trim();
+  const categoria = document.getElementById('categoria').value;
 
-  input.value = '';
-  guardar();
-  render();
-});
-
-// ---------- Marcar / borrar tarea (delegación de eventos) ----------
-lista.addEventListener('click', (e) => {
-  const id = Number(e.target.dataset.id);
-  if (!id) return;
-
-  if (e.target.matches('input[type="checkbox"]')) {
-    const tarea = tareas.find(t => t.id === id);
-    tarea.completada = !tarea.completada;
-    guardar();
-    render();
+  if (!nombreEquipo || !categoria) {
+    mensajeForm.textContent = 'Por favor completa todos los campos antes de enviar.';
+    mensajeForm.style.color = '#FF5A3C';
+    return;
   }
 
-  if (e.target.matches('.btn-borrar')) {
-    tareas = tareas.filter(t => t.id !== id);
-    guardar();
-    render();
-  }
+  // Nota: este formulario no envía datos a ningún servidor todavía.
+  // Aquí es donde conectarías tu backend o servicio de correo (por ejemplo,
+  // un fetch a tu API o a un endpoint como Formspree).
+  mensajeForm.textContent = `¡Listo, ${nombreEquipo}! Registramos su solicitud en la categoría seleccionada. Les confirmaremos por el contacto que dejaron.`;
+  mensajeForm.style.color = '#1F8A85';
+  form.reset();
 });
-
-// ---------- Filtros ----------
-botonesFiltro.forEach(btn => {
-  btn.addEventListener('click', () => {
-    botonesFiltro.forEach(b => b.classList.remove('activo'));
-    btn.classList.add('activo');
-    filtroActual = btn.dataset.filtro;
-    render();
-  });
-});
-
-// ---------- Limpiar completadas ----------
-btnLimpiar.addEventListener('click', () => {
-  tareas = tareas.filter(t => !t.completada);
-  guardar();
-  render();
-});
-
-// ---------- Primera carga ----------
-render();

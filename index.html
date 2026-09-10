@@ -1,49 +1,160 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Tareas</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Torneo Relámpago de Voleibol de Playa — Boca del Río</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <div class="app">
-    <header>
-      <h1>📋 Mis Tareas</h1>
-      <p id="fecha"></p>
-    </header>
-
-    <form id="form-tarea" class="form-tarea">
-      <input
-        type="text"
-        id="input-tarea"
-        placeholder="¿Qué necesitas hacer?"
-        autocomplete="off"
-        required
-      >
-      <select id="select-prioridad">
-        <option value="baja">🟢 Baja</option>
-        <option value="media" selected>🟡 Media</option>
-        <option value="alta">🔴 Alta</option>
-      </select>
-      <button type="submit">Agregar</button>
-    </form>
-
-    <div class="filtros">
-      <button class="filtro-btn activo" data-filtro="todas">Todas</button>
-      <button class="filtro-btn" data-filtro="pendientes">Pendientes</button>
-      <button class="filtro-btn" data-filtro="completadas">Completadas</button>
+  <nav class="nav">
+    <div class="nav-marca">Relámpago<span>Playa</span></div>
+    <button id="btn-menu" class="btn-menu" aria-label="Abrir menú">☰</button>
+    <div id="nav-enlaces" class="nav-enlaces">
+      <a href="#detalles">Detalles</a>
+      <a href="#categorias">Categorías</a>
+      <a href="#horario">Horario</a>
+      <a href="#registro" class="nav-cta">Inscríbete</a>
     </div>
+  </nav>
 
-    <ul id="lista-tareas" class="lista-tareas"></ul>
+  <header class="hero">
+    <div class="hero-fecha">
+      <span class="hero-dia">14</span>
+      <span class="hero-mes">NOV</span>
+      <span class="hero-anio">2026</span>
+    </div>
+    <div class="hero-texto">
+      <h1>Torneo Relámpago<br>de Voleibol de Playa</h1>
+      <p class="hero-lugar">Playa Mocambo · Boca del Río, Veracruz</p>
+      <div class="hero-cuenta" id="cuenta-regresiva" aria-live="polite">
+        <div class="cuenta-bloque"><span id="dias">00</span><small>días</small></div>
+        <div class="cuenta-bloque"><span id="horas">00</span><small>hrs</small></div>
+        <div class="cuenta-bloque"><span id="minutos">00</span><small>min</small></div>
+        <div class="cuenta-bloque"><span id="segundos">00</span><small>seg</small></div>
+      </div>
+      <a href="#registro" class="btn-primario">Inscribir a mi equipo</a>
+    </div>
+  </header>
 
-    <footer>
-      <span id="contador">0 tareas pendientes</span>
-      <button id="btn-limpiar">Limpiar completadas</button>
-    </footer>
-  </div>
+  <section id="detalles" class="detalles">
+    <h2>Lo que necesitas saber</h2>
+    <div class="detalles-lista">
+      <div class="detalle-item">
+        <span class="detalle-numero">4</span>
+        <p>equipos por bloque, todos contra todos antes de la eliminatoria</p>
+      </div>
+      <div class="detalle-item">
+        <span class="detalle-numero">2</span>
+        <p>jugadores por equipo, formato clásico de playa</p>
+      </div>
+      <div class="detalle-item">
+        <span class="detalle-numero">$300</span>
+        <p>cuota de inscripción por pareja, incluye playera y arbitraje</p>
+      </div>
+      <div class="detalle-item">
+        <span class="detalle-numero">$8,000</span>
+        <p>bolsa de premios repartida entre los primeros tres lugares de cada categoría</p>
+      </div>
+    </div>
+  </section>
 
-  <script src="script.js"></script>
+  <section id="categorias" class="categorias">
+    <h2>Categorías abiertas</h2>
+    <div class="categorias-grid">
+      <article class="categoria-card">
+        <h3>Varonil libre</h3>
+        <p>Sin límite de edad. El nivel más competitivo del torneo.</p>
+      </article>
+      <article class="categoria-card">
+        <h3>Femenil libre</h3>
+        <p>Sin límite de edad. Abierta a jugadoras de cualquier club.</p>
+      </article>
+      <article class="categoria-card">
+        <h3>Mixto recreativo</h3>
+        <p>Un jugador y una jugadora por pareja. Pensada para disfrutar la playa.</p>
+      </article>
+      <article class="categoria-card">
+        <h3>Sub-18</h3>
+        <p>Para jugadores nacidos en 2009 o después. Semillero de la región.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="horario" class="horario">
+    <h2>Cómo se juega el fin de semana</h2>
+    <ol class="linea-tiempo">
+      <li>
+        <span class="lt-momento">Sáb · 8:00 am</span>
+        <div><h3>Registro y acreditación</h3><p>Entrega de playeras y confirmación de parejas en la carpa principal.</p></div>
+      </li>
+      <li>
+        <span class="lt-momento">Sáb · 9:30 am</span>
+        <div><h3>Fase de grupos</h3><p>Todos contra todos dentro de cada bloque, sets a 21 puntos.</p></div>
+      </li>
+      <li>
+        <span class="lt-momento">Sáb · 5:00 pm</span>
+        <div><h3>Cierre de jornada</h3><p>Tabla de posiciones publicada para definir cruces de eliminatoria.</p></div>
+      </li>
+      <li>
+        <span class="lt-momento">Dom · 9:00 am</span>
+        <div><h3>Cuartos y semifinales</h3><p>Eliminación directa, sets a 21 con tie-break a 15.</p></div>
+      </li>
+      <li>
+        <span class="lt-momento">Dom · 3:00 pm</span>
+        <div><h3>Finales y premiación</h3><p>Finales de las cuatro categorías seguidas de la entrega de premios.</p></div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="registro" class="registro">
+    <h2>Inscribe a tu equipo</h2>
+    <p class="registro-nota">Cupo limitado a 16 parejas por categoría. El lugar se confirma al recibir el pago.</p>
+    <form id="form-registro" class="form-registro">
+      <div class="campo">
+        <label for="nombre-equipo">Nombre del equipo o pareja</label>
+        <input type="text" id="nombre-equipo" required>
+      </div>
+      <div class="campo-fila">
+        <div class="campo">
+          <label for="jugador1">Jugador 1</label>
+          <input type="text" id="jugador1" required>
+        </div>
+        <div class="campo">
+          <label for="jugador2">Jugador 2</label>
+          <input type="text" id="jugador2" required>
+        </div>
+      </div>
+      <div class="campo-fila">
+        <div class="campo">
+          <label for="categoria">Categoría</label>
+          <select id="categoria" required>
+            <option value="">Selecciona una</option>
+            <option value="varonil">Varonil libre</option>
+            <option value="femenil">Femenil libre</option>
+            <option value="mixto">Mixto recreativo</option>
+            <option value="sub18">Sub-18</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="contacto">Teléfono o correo de contacto</label>
+          <input type="text" id="contacto" required>
+        </div>
+      </div>
+      <button type="submit" class="btn-primario">Enviar inscripción</button>
+      <p id="mensaje-form" class="mensaje-form" role="status"></p>
+    </form>
+  </section>
+
+  <footer class="pie">
+    <p>Torneo Relámpago de Voleibol de Playa · Playa Mocambo, Boca del Río, Veracruz</p>
+    <p>Dudas por WhatsApp: 229 000 0000</p>
+  </footer>
+
+  <script src="js/script.js"></script>
 </body>
 </html>
