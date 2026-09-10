@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Tareas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app">
+    <header>
+      <h1>📋 Mis Tareas</h1>
+      <p id="fecha"></p>
+    </header>
+
+    <form id="form-tarea" class="form-tarea">
+      <input
+        type="text"
+        id="input-tarea"
+        placeholder="¿Qué necesitas hacer?"
+        autocomplete="off"
+        required
+      >
+      <select id="select-prioridad">
+        <option value="baja">🟢 Baja</option>
+        <option value="media" selected>🟡 Media</option>
+        <option value="alta">🔴 Alta</option>
+      </select>
+      <button type="submit">Agregar</button>
+    </form>
+
+    <div class="filtros">
+      <button class="filtro-btn activo" data-filtro="todas">Todas</button>
+      <button class="filtro-btn" data-filtro="pendientes">Pendientes</button>
+      <button class="filtro-btn" data-filtro="completadas">Completadas</button>
+    </div>
+
+    <ul id="lista-tareas" class="lista-tareas"></ul>
+
+    <footer>
+      <span id="contador">0 tareas pendientes</span>
+      <button id="btn-limpiar">Limpiar completadas</button>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
